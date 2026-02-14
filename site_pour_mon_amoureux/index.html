@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon coeur ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Permanent+Marker&family=Caveat:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5e6d3;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.02) 2px, rgba(0,0,0,.02) 3px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,.02) 2px, rgba(0,0,0,.02) 3px);
+            min-height: 100vh;
+            padding: 40px 20px;
+            font-family: 'Caveat', cursive;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Texture papier */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .title {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 4em;
+            color: #2c1810;
+            text-shadow: 3px 3px 0px rgba(255,107,107,0.3);
+            transform: rotate(-2deg);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-family: 'Indie Flower', cursive;
+            font-size: 2em;
+            color: #8b4513;
+            transform: rotate(1deg);
+        }
+
+        /* Washi tape décoratif */
+        .washi-tape {
+            position: absolute;
+            height: 30px;
+            opacity: 0.7;
+            transform: rotate(-3deg);
+        }
+
+        .tape-1 {
+            top: 10px;
+            left: 5%;
+            width: 150px;
+            background: repeating-linear-gradient(45deg, #ff6b6b, #ff6b6b 10px, #ff8787 10px, #ff8787 20px);
+        }
+
+        .tape-2 {
+            top: 10px;
+            right: 10%;
+            width: 120px;
+            background: repeating-linear-gradient(-45deg, #4ecdc4, #4ecdc4 8px, #45b7af 8px, #45b7af 16px);
+        }
+
+        /* Disposition en grille désordonnée */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 20px;
+        }
+
+        /* Polaroids */
+        .polaroid {
+            background: white;
+            padding: 15px 15px 60px 15px;
+            box-shadow: 
+                0 4px 6px rgba(0,0,0,0.1),
+                0 10px 20px rgba(0,0,0,0.15);
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .polaroid:nth-child(1) { transform: rotate(3deg); }
+        .polaroid:nth-child(2) { transform: rotate(-4deg); }
+        .polaroid:nth-child(3) { transform: rotate(2deg); }
+        .polaroid:nth-child(4) { transform: rotate(-3deg); }
+        .polaroid:nth-child(5) { transform: rotate(4deg); }
+        .polaroid:nth-child(6) { transform: rotate(-2deg); }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05) !important;
+            box-shadow: 
+                0 8px 12px rgba(0,0,0,0.2),
+                0 15px 30px rgba(0,0,0,0.25);
+            z-index: 10;
+        }
+
+        /* Punaises */
+        .polaroid::before {
+            content: '📌';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+        }
+
+        .polaroid:nth-child(odd)::before {
+            content: '📍';
+        }
+
+        .photo-frame {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            border: 2px solid #eee;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Coins photo vintage */
+        .photo-corner {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .corner-tl { top: 0; left: 0; border-width: 15px 15px 0 0; border-color: #333 transparent transparent transparent; }
+        .corner-tr { top: 0; right: 0; border-width: 0 15px 15px 0; border-color: transparent #333 transparent transparent; }
+        .corner-bl { bottom: 0; left: 0; border-width: 0 0 15px 15px; border-color: transparent transparent #333 transparent; }
+        .corner-br { bottom: 0; right: 0; border-width: 15px 0 0 15px; border-color: transparent transparent transparent #333; }
+
+        .caption {
+            margin-top: 15px;
+            text-align: center;
+            font-family: 'Indie Flower', cursive;
+            font-size: 1.8em;
+            color: #2c1810;
+            line-height: 1.4;
+        }
+
+        /* Notes adhésives */
+        .sticky-note {
+            background: #feff9c;
+            padding: 25px;
+            margin: 40px auto;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transform: rotate(-1deg);
+            position: relative;
+            font-family: 'Caveat', cursive;
+            font-size: 1.8em;
+            line-height: 1.6;
+            color: #2c1810;
+        }
+
+        .sticky-note::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 20px;
+            background: rgba(255,255,255,0.5);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            border-radius: 2px;
+        }
+
+        .sticky-note.pink {
+            background: #ffb3d9;
+            transform: rotate(2deg);
+        }
+
+        .sticky-note.blue {
+            background: #b3d9ff;
+            transform: rotate(-2deg);
+        }
+
+        /* Doodles dessinés */
+        .doodle {
+            position: absolute;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .doodle-heart {
+            font-size: 4em;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .doodle-star {
+            font-size: 2em;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Ruban adhésif */
+        .tape {
+            position: absolute;
+            height: 25px;
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 1px dashed rgba(0,0,0,0.1);
+            border-right: 1px dashed rgba(0,0,0,0.1);
+        }
+
+        /* Section finale */
+        .love-message {
+            background: white;
+            padding: 40px;
+            margin: 60px auto;
+            max-width: 600px;
+            border: 3px solid #2c1810;
+            box-shadow: 8px 8px 0 #ff6b6b;
+            transform: rotate(-1deg);
+        }
+
+        .love-message h2 {
+            font-family: 'Permanent Marker', cursive;
+            color: #ff6b6b;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .love-message p {
+            font-size: 1.8em;
+            color: #2c1810;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* Signature artistique */
+        .signature {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5em;
+            text-align: right;
+            margin-top: 30px;
+            color: #2c1810;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5em;
+            }
+            .subtitle {
+                font-size: 1.5em;
+            }
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations d'entrée */
+        .polaroid {
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(0deg);
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .polaroid:nth-child(1) { animation-delay: 0.1s; }
+        .polaroid:nth-child(2) { animation-delay: 0.2s; }
+        .polaroid:nth-child(3) { animation-delay: 0.3s; }
+        .polaroid:nth-child(4) { animation-delay: 0.4s; }
+        .polaroid:nth-child(5) { animation-delay: 0.5s; }
+        .polaroid:nth-child(6) { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <!-- Doodles décoratifs -->
+    <div class="doodle doodle-heart" style="top: 5%; left: 5%;">💕</div>
+    <div class="doodle doodle-heart" style="top: 15%; right: 10%;">❤️</div>
+    <div class="doodle doodle-star" style="top: 40%; left: 2%;">✨</div>
+    <div class="doodle doodle-star" style="bottom: 30%; right: 5%;">⭐</div>
+    <div class="doodle" style="top: 60%; left: 8%; font-size: 3em; opacity: 0.2;">🎨</div>
+
+    <!-- Washi tape décoratif -->
+    <div class="washi-tape tape-1"></div>
+    <div class="washi-tape tape-2"></div>
+
+    <div class="container">
+        <header>
+            <h1 class="title">Je t'aime mon Elliot d'amour</h1>
+            <p class="subtitle">Un scrapbook pour mon artiste préféré</p>
+        </header>
+
+        <div class="sticky-note pink">
+            <strong>COUCOU MON COEUR !</strong><br>
+            Joyeuse St Valentin Mister Pinna (Mister Lefevre un jour tkt) ❤️
+        </div>
+
+        <div class="gallery">
+            <!-- Polaroid 1 -->
+            <div class="polaroid">
+                <div class="photo-frame">
+                    <img src="https://media.discordapp.net/attachments/1259582889494974504/1471989637093261430/IMG_20260213_230108_514.jpg?ex=6990f0ad&is=698f9f2d&hm=be5e28f60781fd4c9ef659682af58678159675a0612e99628d386c7fc8b13fcc&=&format=webp&width=508&height=904" alt="">
+                </div>
+                <div class="caption">
+                    "Bro a 5 ans d'age mental"
+                </div>
+            </div>
+
+            <!-- Polaroid 2 -->
+            <div class="polaroid">
+                <div class="photo-frame">
+                    <img src="IMG_6372.jpg" alt="">
+                </div>
+                <div class="caption">
+                    "J'adore tes dessins mon amoureux"
+                </div>
+            </div>
+
+            <!-- Polaroid 3 -->
+            <div class="polaroid">
+                <div class="photo-frame">
+                    <img src="https://media.discordapp.net/attachments/1259582889494974504/1471989341541629984/IMG_20260213_225817_159.jpg?ex=6990f067&is=698f9ee7&hm=c8147bfe0bbfc9bfe801a491a807724373d531ca1c9a912e408275aad2c41829&=&format=webp&width=578&height=800" alt="">
+                </div>
+                <div class="caption">
+                    "Mon homme capable"
+                </div>
+            </div>
+
+            <!-- Polaroid 4 -->
+            <div class="polaroid">
+                <div class="photo-frame">
+                    <img src="https://media.discordapp.net/attachments/1259582889494974504/1471989341118009535/IMG_20260213_225821_380.jpg?ex=6990f067&is=698f9ee7&hm=9abb35e076e3a54195b82a430254b085084d855168424dd437693c202f046d8e&=&format=webp&width=625&height=800" alt="">
+                </div>
+                <div class="caption">
+                    "Ma raison de vivre ez ez ez"
+                </div>
+            </div>
+
+            <!-- Polaroid 5 -->
+            <div class="polaroid">
+                <div class="photo-frame">
+                    <img src="slay.jpg" alt="">
+                </div>
+                <div class="caption">
+                    "Le plus magnifique"
+                </div>
+            </div>
+
+            <!-- Polaroid 6 -->
+            <div class="polaroid">
+                <div class="photo-frame">
+                    <img src="IMG_20260213_225930_445.jpg" alt="">
+                </div>
+                <div class="caption">
+                    "Le plus beau des chats Akira"
+                </div>
+            </div>
+        </div>
+
+        <div class="sticky-note blue">
+            Merci d'être l'amoureux extraordinaire que tu es.
+        </div>
+
+        <div class="love-message">
+            <h2>Pour mon Elliot ❤️</h2>
+            <p>
+                Je t'aime espece d'énorme connard de merde.
+            </p>
+            <div class="signature">
+                Avec tout mon amour,<br>
+                Ton Noah d'amour
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Effet de parallaxe léger sur les doodles
+        document.addEventListener('mousemove', (e) => {
+            const doodles = document.querySelectorAll('.doodle');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            doodles.forEach((doodle, index) => {
+                const speed = (index + 1) * 0.5;
+                const moveX = (x - 0.5) * speed * 20;
+                const moveY = (y - 0.5) * speed * 20;
+                doodle.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+
+        // Click sur polaroid pour agrandir
+        document.querySelectorAll('.polaroid').forEach(polaroid => {
+            polaroid.addEventListener('click', function() {
+                this.style.transition = 'all 0.3s ease';
+            });
+        });
+    </script>
+</body>
+</html>
